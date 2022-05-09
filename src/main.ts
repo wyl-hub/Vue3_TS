@@ -2,18 +2,20 @@ import { createApp } from 'vue'
 import router from './router'
 import store from './store'
 import App from './App.vue'
+import request from './service'
 import '@/assets/css/index.less'
 // 全局引用
 import ElementPlus from 'element-plus'
 import 'element-plus/theme-chalk/index.css'
 
 
-createApp(App)
-.use(router)
-.use(store)
+const app = createApp(App)
+
+app.use(router)
+app.use(store)
 // 全局注册
-.use(ElementPlus)
-.mount('#app')
+app.use(ElementPlus)
+app.mount('#app')
 
 
 // 3. .env 文件

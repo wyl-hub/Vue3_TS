@@ -49,9 +49,12 @@ class YLRequest {
 
     this.instance.interceptors.response.use(
       res => {
-        return res.data
+        return res?.data
       },
       err => {
+        const { data, status } = err.response
+        alert(`${data}--${status}`)
+        throw data
       }
     )
 
@@ -78,19 +81,17 @@ class YLRequest {
       }
 
       this.instance.request<any, T>(config)
-      .then(res => {
-        // 响应单独拦截器
-        if (config.interceptors?.responseInterceptor) {
-          res = config.interceptors.responseInterceptor(res)
-        }
-        reslove(res)
-      })
-      .finally(() => {
-        setTimeout(() => {
+        .then(res => {
+          // 响应单独拦截器
+          if (config.interceptors?.responseInterceptor) {
+            res = config.interceptors.responseInterceptor(res)
+          }
+          reslove(res)
+        })
+        .finally(() => {
           if (loadingFlag) this.loadingCount--
           if (this.loadingCount === 0) this.loading?.close()
-        }, 1000);
-      })
+        })
     })
   }
 

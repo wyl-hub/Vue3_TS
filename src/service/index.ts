@@ -6,7 +6,7 @@ const request = new YLRequest({
   timeout: 10000,
   interceptors: {
     requestInterceptor: config => {
-      const token = ''
+      const token = window.localStorage.getItem('token')
       if (token) {
         if (config.headers) config.headers.Authorization = token
         else {
@@ -15,13 +15,6 @@ const request = new YLRequest({
         }
       }
       return config
-    },
-    requestInterceptorCatch: err => {
-    },
-    responseInterceptor: res => {
-      return res
-    },
-    responseInterceptorCatch: err => {
     }
   }
 })

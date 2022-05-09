@@ -7,7 +7,7 @@
           <el-input v-model="form.name" />
         </el-form-item>
         <el-form-item prop="password" label="密码">
-          <el-input type="password" show-password v-model="form.password" />
+          <el-input type="password" @keydown.enter="login" show-password v-model="form.password" />
         </el-form-item>
       </el-form>
       <el-button class="login-btn" @click="login" type="primary">登陆</el-button>
@@ -17,9 +17,13 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue'
+import { useRouter } from "vue-router"
+import { useStore } from 'vuex'
 import type { FormInstance, FormRules } from 'element-plus'
 export default defineComponent({
   setup() {
+    const store = useStore()
+    const router = useRouter()
     // 表单节点
     const formDom = ref<FormInstance>()
     // 登陆表单
@@ -43,7 +47,7 @@ export default defineComponent({
       if (!formDom.value) return
       formDom.value?.validate(valid => {
         if (!valid) return
-        console.log('登陆成功')
+        store.dispatch('login/accountLoginAction', { data: { ...form }, router })
       })
     }
 
