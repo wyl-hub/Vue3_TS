@@ -7,10 +7,14 @@ import '@/assets/css/index.less'
 // 全局引用
 import ElementPlus from 'element-plus'
 import 'element-plus/theme-chalk/index.css'
-
+// 全局导入icon
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
 const app = createApp(App)
 
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component)
+}
 app.use(router)
 app.use(store)
 // 全局注册

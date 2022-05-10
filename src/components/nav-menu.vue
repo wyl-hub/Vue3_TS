@@ -5,49 +5,114 @@
       <div>Vue3 Ts</div>
     </div>
     <el-menu
-      background-color="#00132b"
       default-active="2"
-      text-color="#fff"
+      class="menu"
+      background-color="#0c2135"
+      text-color="#b7bdc3"
+      active-text-color="#0a60bd"
     >
-      <el-sub-menu index="1">
-        <template #title>
-          <el-icon>
-            <Location />
-          </el-icon>
-          <span>Navigator One</span>
+      <template v-for="(item, index) in menuList" :key="index">
+        <!-- 一级 有子集 菜单 -->
+        <template v-if="item.type === 1">
+          <el-sub-menu :index="index + ''">
+            <template #title>
+              <el-icon>
+                <component v-if="item.icon" :is="item.icon" />
+              </el-icon>
+              <span>{{ item.title }}</span>
+            </template>
+            <!-- 二级菜单 -->
+            <template v-for="(subItem, subIndex) in item.children" :key="subIndex">
+              <!-- 二级 有子集 -->
+              <template v-if="subItem.type === 1">
+                <el-sub-menu :index="index + '-' + subIndex">
+                  <template #title>
+                    <el-icon>
+                      <component v-if="subItem.icon" :is="subItem.icon" />
+                    </el-icon>
+                    <span>{{ subItem.title }}</span>
+                  </template>
+                  <!-- 三级菜单 默认都是type 2 -->
+                  <template v-for="(lastItem, lastIndex) in subItem.children" :key="lastIndex">
+                    <el-menu-item :index="index + '-' + subIndex + '-' + lastIndex">
+                      <el-icon>
+                        <component v-if="lastItem.icon" :is="lastItem.icon" />
+                      </el-icon>
+                      <span>{{ lastItem.title }}</span>
+                    </el-menu-item>
+                  </template>
+                </el-sub-menu>
+              </template>
+              <!-- 二级 无子集 -->
+              <template v-if="subItem.type === 2">
+                <el-menu-item :index="index + '-' + subIndex">
+                  <el-icon>
+                    <component v-if="subItem.icon" :is="subItem.icon" />
+                  </el-icon>
+                  <span>{{ subItem.title }}</span>
+                </el-menu-item>
+              </template>
+            </template>
+          </el-sub-menu>
         </template>
-        <el-sub-menu index="1-4">
-          <template #title>item four</template>
-          <el-menu-item index="1-4-1">item one</el-menu-item>
-        </el-sub-menu>
-      </el-sub-menu>
-      <el-menu-item index="2">
-        <el-icon>
-          <Menu />
-        </el-icon>
-        <span>Navigator Two</span>
-      </el-menu-item>
-      <el-menu-item index="3" disabled>
-        <el-icon>
-          <Document />
-        </el-icon>
-        <span>Navigator Three</span>
-      </el-menu-item>
-      <el-menu-item index="4">
-        <el-icon>
-          <Setting />
-        </el-icon>
-        <span>Navigator Four</span>
-      </el-menu-item>
+        <!-- 一级 无子集 -->
+        <template v-if="item.type === 2">
+          <el-menu-item :index="index + ''">
+            <el-icon>
+              <component v-if="item.icon" :is="item.icon" />
+            </el-icon>
+            <span>{{ item.title }}</span>
+          </el-menu-item>
+        </template>
+      </template>
     </el-menu>
   </div>
 </template>
 
 <script setup lang="ts">
-import { Location, Document, Setting, Menu } from '@element-plus/icons-vue'
+const menuList = [
+  {
+    title: 'Navigator One',
+    type: 1,
+    icon: 'Location',
+    children: [
+      {
+        title: 'item four',
+        type: 1,
+        icon: '',
+        children: [
+          {
+            title: 'item one',
+            type: 2,
+            icon: '',
+            children: []
+          }
+        ]
+      },
+      {
+        title: '设置',
+        type: 2,
+        icon: '',
+        children: []
+      }
+    ]
+  },
+  {
+    title: '客户',
+    type: 2,
+    icon: '',
+    children: []
+  }
+]
 </script>
 
 <style lang="less" scoped>
+.nav {
+  box-sizing: border-box;
+  .menu {
+    border-right: none !important;
+  }
+}
 .logo {
   width: 100%;
   height: 80px;
@@ -55,6 +120,7 @@ import { Location, Document, Setting, Menu } from '@element-plus/icons-vue'
   align-items: center;
   box-sizing: border-box;
   padding-left: 20px;
+
   img {
     width: 30px;
     height: 30px;
@@ -62,5 +128,4 @@ import { Location, Document, Setting, Menu } from '@element-plus/icons-vue'
   }
 }
 
-.menu {}
 </style>

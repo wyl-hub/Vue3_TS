@@ -4,8 +4,16 @@
       <nav-menu></nav-menu>
     </el-aside>
     <el-container>
-      <el-header class="header">Header</el-header>
-      <el-main class="main">Main</el-main>
+      <el-header class="header">
+        <nav-header></nav-header>
+      </el-header>
+      <el-main class="main">
+        <ul>
+          <li v-for="item in arr">
+            {{ item === 'aaa' ? 'a' : 'b'}}
+          </li>
+        </ul>
+      </el-main>
     </el-container>
   </el-container>
 </template>
@@ -13,13 +21,17 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import NavMenu from '@/components/nav-menu.vue'
+import NavHeader from '@/components/nav-header.vue'
 export default defineComponent({
   setup() {
-
-
+    const arr = ['test', 'aaa', 'vvv']
+    return {
+      arr
+    }
   },
   components: {
-    NavMenu
+    NavMenu,
+    NavHeader
   }
 })
 </script>
