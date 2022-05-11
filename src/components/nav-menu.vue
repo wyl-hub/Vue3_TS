@@ -2,11 +2,13 @@
   <div class="nav">
     <div class="logo">
       <img src="~@/assets/imgs/logo.svg" />
-      <div>Vue3 Ts</div>
+      <div v-if="!isFold">Vue3 Ts</div>
     </div>
     <el-menu
       default-active="2"
       class="menu"
+      :collapse="isFold"
+      collapse-transition
       background-color="#0c2135"
       text-color="#b7bdc3"
       active-text-color="#0a60bd"
@@ -70,6 +72,9 @@
 </template>
 
 <script setup lang="ts">
+const props = defineProps({
+  isFold: Boolean
+})
 const menuList = [
   {
     title: 'Navigator One',
@@ -100,7 +105,7 @@ const menuList = [
   {
     title: '客户',
     type: 2,
-    icon: '',
+    icon: 'Menu',
     children: []
   }
 ]

@@ -1,11 +1,11 @@
 <template>
   <el-container class="container">
-    <el-aside class="aside">
-      <nav-menu></nav-menu>
+    <el-aside :style="{width: isFold ? 'fit-content' : '210px'}" class="aside">
+      <nav-menu :isFold="isFold" />
     </el-aside>
     <el-container>
       <el-header class="header">
-        <nav-header></nav-header>
+        <nav-header :isFold="isFold" @changeFold='changeFold' />
       </el-header>
       <el-main class="main">
         <ul>
@@ -19,14 +19,22 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import NavMenu from '@/components/nav-menu.vue'
 import NavHeader from '@/components/nav-header.vue'
 export default defineComponent({
   setup() {
     const arr = ['test', 'aaa', 'vvv']
+    const isFold = ref(false)
+
+    // 点击折叠按钮
+    const changeFold = (data: boolean) => {
+      isFold.value = data
+    }
     return {
-      arr
+      arr,
+      isFold,
+      changeFold
     }
   },
   components: {
@@ -40,7 +48,6 @@ export default defineComponent({
 .container {
   height: 100%;
   .aside {
-    width: 210px;
     background-color: #00152B;
     color: white;
   }

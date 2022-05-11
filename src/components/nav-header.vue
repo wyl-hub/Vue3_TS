@@ -1,22 +1,26 @@
 <template>
   <div class="header">
-    <el-icon @click="changeFold" class="iconSize"><component :is="isFold ? 'Fold' : 'Expand'" /></el-icon>
+    <el-icon @click="handleFold" class="iconSize"><component :is="isFold ? 'Expand' : 'Fold'" /></el-icon>
   </div>
 </template>
 
 <script lang="ts">
-import { ref } from "vue"
+import { ref, toRefs } from "vue"
 export default {
-  setup () {
-    const isFold = ref(false)
-
-    // 点击折叠按钮
-    const changeFold = () => {
-      isFold.value = !isFold.value
+  emits: ['changeFold'],
+  props: {
+    isFold: Boolean
+  },
+  setup (props, { emit }) {
+    const { isFold } = toRefs(props)
+    const handleFold = () => {
+      const data = !isFold.value
+      emit('changeFold', data)
     }
+
     return {
       isFold,
-      changeFold
+      handleFold
     }
   }
 }
