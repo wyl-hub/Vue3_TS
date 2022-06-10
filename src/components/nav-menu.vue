@@ -35,8 +35,8 @@
                     <span>{{ subItem.title }}</span>
                   </template>
                   <!-- 三级菜单 默认都是type 2 -->
-                  <template v-for="(lastItem, lastIndex) in subItem.children" :key="lastIndex">
-                    <el-menu-item :index="index + '-' + subIndex + '-' + lastIndex">
+                  <template v-for="(lastItem, lastIndex) in subItem.children" :key="lastIndex" >
+                    <el-menu-item :index="index + '-' + subIndex + '-' + lastIndex" @click="clickMenu(lastItem)">
                       <el-icon>
                         <component v-if="lastItem.icon" :is="lastItem.icon" />
                       </el-icon>
@@ -47,7 +47,7 @@
               </template>
               <!-- 二级 无子集 -->
               <template v-if="subItem.type === 2">
-                <el-menu-item :index="index + '-' + subIndex">
+                <el-menu-item :index="index + '-' + subIndex" @click="clickMenu(subItem)">
                   <el-icon>
                     <component v-if="subItem.icon" :is="subItem.icon" />
                   </el-icon>
@@ -59,7 +59,7 @@
         </template>
         <!-- 一级 无子集 -->
         <template v-if="item.type === 2">
-          <el-menu-item :index="index + ''">
+          <el-menu-item :index="index + ''" @click="clickMenu(item)">
             <el-icon>
               <component v-if="item.icon" :is="item.icon" />
             </el-icon>
@@ -72,43 +72,16 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
-  isFold: Boolean
-})
-const menuList = [
-  {
-    title: 'Navigator One',
-    type: 1,
-    icon: 'Location',
-    children: [
-      {
-        title: 'item four',
-        type: 1,
-        icon: '',
-        children: [
-          {
-            title: 'item one',
-            type: 2,
-            icon: '',
-            children: []
-          }
-        ]
-      },
-      {
-        title: '设置',
-        type: 2,
-        icon: '',
-        children: []
-      }
-    ]
-  },
-  {
-    title: '客户',
-    type: 2,
-    icon: 'Menu',
-    children: []
-  }
-]
+import type { IMenuItem } from '@/service/login/types'
+import { useRouter } from 'vue-router';
+const props = defineProps<{
+  isFold: boolean,
+  menuList: IMenuItem[]
+}>()
+const router = useRouter()
+const clickMenu = (item: IMenuItem) => {
+  if (item.url) router.push(item.url)
+}
 </script>
 
 <style lang="less" scoped>

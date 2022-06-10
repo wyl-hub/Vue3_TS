@@ -53,6 +53,9 @@ class YLRequest {
       },
       err => {
         const { data, status } = err.response
+        if (data === '登陆失效' && status === 500) {
+          window.location.hash = '/login'
+        }
         alert(`${data}--${status}`)
         throw data
       }

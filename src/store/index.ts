@@ -1,6 +1,6 @@
-import { createStore } from 'vuex'
+import { createStore, Store, useStore as useVuexStore } from 'vuex'
 import login from './login/login'
-import type { IRootState } from './types'
+import type { IRootState, IStoreType } from './types'
 
 export default createStore<IRootState>({
   state: {
@@ -14,3 +14,7 @@ export default createStore<IRootState>({
     login
   }
 })
+
+export function useStore(): Store<IStoreType> {
+  return useVuexStore()
+}
