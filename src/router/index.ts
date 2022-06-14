@@ -34,25 +34,26 @@ const router = createRouter({
   history: createWebHashHistory()
 })
 
-router.beforeEach((to, from, next) => {
-  if (isFirst) {
-    const routes = window.localStorage.getItem('routes')
-    if (routes) {
-      const arr = JSON.parse(routes)
-      for (let item of arr) {
-        const tempArr = item.path.split('/')
-        const componentName = tempArr[tempArr.length - 1]
-        item.component = () => import(`@/views${item.path}/${componentName}.vue`)
-        router.addRoute('main', item)
-      }
+// 首次启动项目 如果storage中有菜单 先注册菜单
+if (isFirst) {
+  const routes = window.localStorage.getItem('routes')
+  if (routes) {
+    const arr = JSON.parse(routes)
+    for (let item of arr) {
+      const tempArr = item.path.split('/')
+      const componentName = tempArr[tempArr.length - 1]
+      item.component = () => import(`@/views${item.path}/${componentName}.vue`)
+      router.addRoute('main', item)
     }
-    isFirst = false
   }
+  isFirst = false
+}
+
+router.beforeEach((to) => {
   const token = window.localStorage.getItem('token')
   if (!token && to.path !== '/login') {
     return '/login'
   }
-  next({path: to.path})
 })
 
 export default router

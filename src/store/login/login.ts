@@ -28,7 +28,6 @@ const loginModule: Module<ILoginState, IRootState> = {
       state.userMenu = menuList
       const storageMenu = window.localStorage.getItem('routes')
       if (storageMenu) return
-      console.log(1)
       const routes = mapRouter(menuList)
       for (let item of routes) {
         router.addRoute('main', item)

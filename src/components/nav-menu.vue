@@ -4,15 +4,8 @@
       <img src="~@/assets/imgs/logo.svg" />
       <div v-if="!isFold">Vue3 Ts</div>
     </div>
-    <el-menu
-      default-active="2"
-      class="menu"
-      :collapse="isFold"
-      collapse-transition
-      background-color="#0c2135"
-      text-color="#b7bdc3"
-      active-text-color="#0a60bd"
-    >
+    <el-menu :default-active="activeIndex" class="menu" :collapse="isFold" collapse-transition background-color="#0c2135"
+      text-color="#b7bdc3" active-text-color="#0a60bd">
       <template v-for="(item, index) in menuList" :key="index">
         <!-- 一级 有子集 菜单 -->
         <template v-if="item.type === 1">
@@ -35,7 +28,7 @@
                     <span>{{ subItem.title }}</span>
                   </template>
                   <!-- 三级菜单 默认都是type 2 -->
-                  <template v-for="(lastItem, lastIndex) in subItem.children" :key="lastIndex" >
+                  <template v-for="(lastItem, lastIndex) in subItem.children" :key="lastIndex">
                     <el-menu-item :index="index + '-' + subIndex + '-' + lastIndex" @click="clickMenu(lastItem)">
                       <el-icon>
                         <component v-if="lastItem.icon" :is="lastItem.icon" />
@@ -72,8 +65,10 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref } from 'vue';
 import type { IMenuItem } from '@/service/login/types'
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
+import { nextTick } from 'process';
 const props = defineProps<{
   isFold: boolean,
   menuList: IMenuItem[]
@@ -82,15 +77,59 @@ const router = useRouter()
 const clickMenu = (item: IMenuItem) => {
   if (item.url) router.push(item.url)
 }
+const activeIndex = ref<string>('')
+
+onMounted(() => {
+  const route = useRoute()
+  setTimeout(() => {
+    const { path } = route
+    const indexArr = []
+    findRouter(props.menuList, indexArr, path)
+    switch (indexArr.length) {
+      case 1:
+        activeIndex.value = indexArr[0] + ''
+        break
+      case 2:
+        activeIndex.value = indexArr[0] + '-' + indexArr[1]
+        break
+      case 3:
+        activeIndex.value = indexArr[0] + '-' + indexArr[1] + '-' + indexArr[2]
+        break
+    }
+  }, 100);
+})
+
+const findRouter = (arr: IMenuItem[], indexArr: number[], path: string): boolean => {
+  if (arr.length <= 0) return true
+  for (let i = 0; i < arr.length; ++i) {
+    const item = arr[i]
+    if (item.children && item.children.length > 0) {
+      indexArr.push(i)
+      const result = findRouter(item.children, indexArr, path)
+      if (result) return true
+    } else {
+      if (item.url === path) {
+        indexArr.push(i)
+        return true
+      }
+      else if (i === arr.length - 1) {
+        indexArr.length = 0
+      }
+    }
+  }
+  return false
+}
 </script>
 
 <style lang="less" scoped>
 .nav {
   box-sizing: border-box;
+
   .menu {
     border-right: none !important;
   }
 }
+
 .logo {
   width: 100%;
   height: 80px;
@@ -105,5 +144,4 @@ const clickMenu = (item: IMenuItem) => {
     margin-right: 5px;
   }
 }
-
 </style>
