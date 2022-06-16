@@ -1,5 +1,5 @@
 <template>
-  <h2>找不到页面！~~~~~</h2>
+  <h2>管理员说你没有权限访问这个页面~~~~~</h2>
 </template>
 
 <script lang="ts">

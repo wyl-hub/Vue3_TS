@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import type { RouteRecordRaw } from 'vue-router'
-import { verifyToken } from '@/service/login/login'
 import Login from '@/views/login/login.vue'
+import notFound from '@/views/notFound/notFound.vue'
 
 let isFirst = true
 
@@ -26,6 +26,10 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/main/home/home.vue')
       }
     ]
+  },
+  {
+    path: '/:patchMatch(.*)*',
+    component: notFound
   }
 ]
 
