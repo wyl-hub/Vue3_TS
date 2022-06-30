@@ -8,13 +8,14 @@
     </div>
     <!-- 面包屑 -->
     <div class="breadContainer">
-      我是面包屑
+      <nav-breadcrumb />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { ref, toRefs, defineComponent } from "vue"
+import { ref, toRefs, defineComponent, reactive } from "vue"
+import NavBreadcrumb from "../baseUi/breadcrumb"
 export default defineComponent({
   emits: ['changeFold'],
   props: {
@@ -31,6 +32,9 @@ export default defineComponent({
       isFold,
       handleFold
     }
+  },
+  components: {
+    NavBreadcrumb
   }
 })
 </script>

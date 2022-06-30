@@ -1,7 +1,7 @@
 <template>
   <el-container class="container">
     <el-aside :style="{width: isFold ? 'fit-content' : '210px'}" class="aside">
-      <nav-menu :menuList="menuList" :isFold="isFold" />
+      <nav-menu :menuList="menuList" :isFold="isFold" @getBreadPath="getBreadPath" />
     </el-aside>
     <el-container>
       <el-header class="header">
@@ -27,18 +27,21 @@ export default defineComponent({
     store.dispatch('login/getDetailByToken')
     
     const menuList = computed(() => store.state.login.userMenu)
-    const arr = ['test', 'aaa', 'vvv']
     const isFold = ref(false)
 
     // 点击折叠按钮
     const changeFold = (data: boolean) => {
       isFold.value = data
     }
+    // 获取面包屑路径
+    const getBreadPath = (data: string[]) => {
+        store.dispatch('getBreadcrumbPath', { data })
+    }
     return {
-      arr,
       isFold,
       menuList,
-      changeFold
+      changeFold,
+      getBreadPath
     }
   },
   components: {

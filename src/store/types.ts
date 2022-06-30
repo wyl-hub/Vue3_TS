@@ -1,6 +1,7 @@
 import type { ILoginState } from './login/types'
 interface IRootState {
-  name: string
+  name: string,
+  breadPath: string[]
 }
 
 interface IRootWithModule {

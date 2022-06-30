@@ -5,7 +5,7 @@
       <div v-if="!isFold">Vue3 Ts</div>
     </div>
     <el-menu :default-active="activeIndex" class="menu" :collapse="isFold" collapse-transition background-color="#0c2135"
-      text-color="#b7bdc3" active-text-color="#0a60bd">
+      text-color="#b7bdc3" active-text-color="#0a60bd" @select="getRouteArr">
       <template v-for="(item, index) in menuList" :key="index">
         <!-- 一级 有子集 菜单 -->
         <template v-if="item.type === 1">
@@ -73,6 +73,9 @@ const props = defineProps<{
   isFold: boolean,
   menuList: IMenuItem[]
 }>()
+
+const emits = defineEmits(['getBreadPath'])
+
 const router = useRouter()
 const clickMenu = (item: IMenuItem) => {
   if (item.url) router.push(item.url)
@@ -96,6 +99,7 @@ onMounted(() => {
         activeIndex.value = indexArr[0] + '-' + indexArr[1] + '-' + indexArr[2]
         break
     }
+    getRouteArr(activeIndex.value)
   }, 100);
 })
 
@@ -118,6 +122,23 @@ const findRouter = (arr: IMenuItem[], indexArr: number[], path: string): boolean
     }
   }
   return false
+}
+
+// 选择菜单
+const getRouteArr = index => {
+  const arr = index.split('-')
+  const pathArr: string[] = []
+  let temp: IMenuItem[] | undefined = undefined
+  for (let i = 0; i < arr.length; ++i) {
+    if (temp !== undefined) {
+      pathArr.push(temp[arr[i]].title)
+      temp = temp[arr[i]].children
+    } else {
+      pathArr.push(props.menuList[arr[i]].title)
+      temp = props.menuList[arr[i]].children
+    }
+  }
+  emits('getBreadPath', pathArr)
 }
 </script>
 
