@@ -59,7 +59,7 @@ export default defineComponent({
     color: white;
   }
   .header {
-    height: 80px;
+    height: 50px;
     background-color: #fff;
   }
   .main {
