@@ -1,7 +1,7 @@
 <template>
   <div class="nav">
     <div class="logo">
-      <img src="~@/assets/imgs/logo.svg" />
+      <img @click="testClick" :class="testFlag ? 'animation' : ''" src="~@/assets/imgs/logo.svg" />
       <div v-if="!isFold">Vue3 Ts</div>
     </div>
     <el-menu :default-active="activeIndex" class="menu" :collapse="isFold" collapse-transition background-color="#0c2135"
@@ -82,6 +82,14 @@ const clickMenu = (item: IMenuItem) => {
 }
 const activeIndex = ref<string>('')
 
+const testFlag = ref<boolean>(false)
+
+const testClick = () => {
+  testFlag.value = true
+  setTimeout(() => {
+    testFlag.value = false
+  }, 500);
+}
 onMounted(() => {
   const route = useRoute()
   setTimeout(() => {
@@ -163,6 +171,24 @@ const getRouteArr = index => {
     width: 30px;
     height: 30px;
     margin-right: 5px;
+  }
+}
+
+.animation {
+  animation: scale .5s ease-out;
+}
+
+@keyframes scale {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
   }
 }
 </style>
