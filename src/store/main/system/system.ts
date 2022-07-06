@@ -1,26 +1,29 @@
 import { Module } from "vuex"
 import { getPageList } from '@/service/main/system/system'
 import type { IRootState } from "@/store/types"
-import type { ISystemState } from "./types"
+import type { ISystemState, IPageTableForm } from "./types"
 
 
 const systemModule: Module<ISystemState, IRootState> = {
     namespaced: true,
     state() {
         return {
-            userList: []
+            userList: [],
+            total: 0
         }
     },
     mutations: {
-
+        setPageList(state, payload: { list: any[], total: number }) {
+            const { list, total } = payload
+            state.userList = list
+            state.total = total
+        }
     },
     actions: {
-        async getPageListAction() {
-            const result = await getPageList({
-                offset: 0,
-                size: 10
-            })
-            console.log(result)
+        async getPageListAction({ commit }, payload: { data: IPageTableForm }) {
+            const { data } = payload
+            const result = await getPageList(data)
+            commit('setPageList', result)
         }
     }
 }

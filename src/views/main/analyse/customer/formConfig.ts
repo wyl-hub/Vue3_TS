@@ -1,6 +1,6 @@
 import type { IFormConfig } from '@/baseUi/searchHeader'
 
-const formConfig: IFormConfig[] = [
+export const formConfig: IFormConfig[] = [
     {
         field: 'name',
         title: '用户名',
@@ -18,4 +18,25 @@ const formConfig: IFormConfig[] = [
     }
 ]
 
-export default formConfig
+export const tableConfig = [
+    {
+        prop: 'name',
+        label: '用户名',
+        minWidth: ''
+    },
+    {
+        prop: 'phone',
+        label: '手机号码',
+        minWidth: ''
+    },
+    {
+        prop: 'createdTime',
+        label: '创建时间',
+        minWidth: ''
+    },
+    {
+        prop: 'updateTime',
+        label: '更新时间',
+        minWidth: ''
+    }
+]
