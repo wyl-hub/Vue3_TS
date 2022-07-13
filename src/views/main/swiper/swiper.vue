@@ -1,5 +1,5 @@
 <template>
-  <h2>Hello test</h2>
+  <h2>Hello swiper</h2>
 </template>
 
 <script lang="ts">

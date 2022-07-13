@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+import { computed, defineComponent, ref, reactive } from 'vue'
 import { useStore } from '@/store'
 import { reset } from '@/baseUi/searchHeader/formHooks'
 import { handleClose } from '@/baseUi/table/hooks'

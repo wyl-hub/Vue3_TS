@@ -38,5 +38,9 @@ export const tableConfig = [
         prop: 'updateTime',
         label: '更新时间',
         minWidth: ''
+    },
+    {
+        prop: 'options',
+        label: '操作'
     }
 ]

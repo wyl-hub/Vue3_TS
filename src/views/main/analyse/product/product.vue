@@ -1,5 +1,5 @@
 <template>
-  <h2>商品分析</h2>
+  <img src="http://localhost:3000/uploads/imgs/16571623048592.png" alt="">
 </template>
 
 <script lang="ts">
