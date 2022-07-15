@@ -2,4 +2,6 @@ import request from "@/service";
 import type { IPageList } from './types'
 import type { IPageTableForm } from '@/store/main/system/types'
  
-export const getPageList = (data: IPageTableForm) => request.post<IPageList>({ url: '/customer/getCustomerList', data})
+export const getPageList = (pageName: string, data: IPageTableForm) => {
+    return request.post<IPageList>({ url: `/page/get${pageName}List`, data})
+}

@@ -9,21 +9,25 @@ const systemModule: Module<ISystemState, IRootState> = {
     state() {
         return {
             userList: [],
-            total: 0
+            userTotal: 0,
+            swiperList: [],
+            swiperTotal: 0
         }
     },
     mutations: {
-        setPageList(state, payload: { list: any[], total: number }) {
-            const { list, total } = payload
-            state.userList = list
-            state.total = total
+        setPageList(state, payload: { pageName: string, result: any[] }) {
+            const { result, pageName } = payload
+            state[`${pageName}List`] = result
+            state[`${pageName}Total`] = result.length
         }
     },
     actions: {
-        async getPageListAction({ commit }, payload: { data: IPageTableForm }) {
-            const { data } = payload
-            const result = await getPageList(data)
-            commit('setPageList', result)
+        async getPageListAction({ commit }, payload: { pageName: string, data: IPageTableForm }) {
+            const { pageName, data } = payload
+            const arr = pageName.split('')
+            arr[0] = arr[0].toUpperCase()
+            const result = await getPageList(arr.join(''), data)
+            commit('setPageList', { pageName, result })
         }
     }
 }

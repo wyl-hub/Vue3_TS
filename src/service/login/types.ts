@@ -10,6 +10,7 @@ export interface ILoginForm {
 }
 
 export interface IMenuItem {
+  id: number
   title: string
   icon: string
   type: number
