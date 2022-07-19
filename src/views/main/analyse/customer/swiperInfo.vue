@@ -6,11 +6,11 @@
 <script lang="ts" >
 import { defineComponent, ref } from 'vue'
 import YLUpload from '@/baseUi/upload'
-import { customerUpload } from '@/service/upload/index'
+import { uploadSingle } from '@/service/upload/index'
 export default defineComponent({
     setup() {
         const uploadFunction = (data) => {
-            customerUpload(data).then(res => {
+            uploadSingle(data).then(res => {
                 console.log(res)
             })
         }

@@ -1,6 +1,6 @@
 import { BASE_URL } from '../request/config'
-
-const uploadRequest = function(config) {
+import { IFile } from '@/baseUi/upload/types'
+const uploadRequest = function(config): Promise<IFile> {
     return new Promise((resolve, reject) => {
         const { url, data } = config
         const xhr = new XMLHttpRequest()
@@ -11,7 +11,7 @@ const uploadRequest = function(config) {
         xhr.open('post', requestUrl)
 
         xhr.onload = function() {
-            resolve(this.responseText)
+            resolve(JSON.parse(this.responseText))
         }
     
         xhr.onerror = function(err) {

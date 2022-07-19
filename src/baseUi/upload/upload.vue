@@ -1,35 +1,45 @@
 <template>
     <div>
-        <el-upload action="" class="avatar-uploader" :show-file-list="false" :on-success="uploadSuccess"
-            :before-upload="beforeUpload" :http-request="uploadRequest">
-            <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-            <el-icon v-else class="avatar-uploader-icon">
+        <el-upload v-model:file-list="fileList" :limit="1" :on-preview="handlePreview" :before-upload="beforeUpload" :http-request="uploadRequest"
+            action="#" list-type="picture-card">
+            <el-icon>
                 <Plus />
             </el-icon>
         </el-upload>
+        <div>最多上传一张图片</div>
+
+        <el-dialog v-model="dialogVisible">
+            <img w-full :src="dialogImageUrl" alt="Preview Image" />
+        </el-dialog>
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, PropType } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
+import type { IFile } from './types'
 import type { UploadProps } from 'element-plus'
 export default defineComponent({
+    props: {
+        fileList: {
+            type: Array as PropType<IFile[]>
+        }
+    },
     emit: ['uploadFunction'],
     setup(props, { emit }) {
         // 上传图片临时地址
-        const imageUrl = ref('')
-
+        // const imageUrl = ref('')
         // 上传图片对象
-        const file = ref({})
+        const dialogImageUrl = ref('')
+        const dialogVisible = ref(false)
 
-        const uploadSuccess: UploadProps['onSuccess'] = (
-            response,
-            uploadFile
-        ) => {
-            imageUrl.value = URL.createObjectURL(uploadFile.raw!)
-        }
+        // const uploadSuccess: UploadProps['onSuccess'] = (
+        //     response,
+        //     uploadFile
+        // ) => {
+        //     imageUrl.value = URL.createObjectURL(uploadFile.raw!)
+        // }
 
 
         // 上传图片格式校验
@@ -48,17 +58,25 @@ export default defineComponent({
 
         // 上传图片请求
         const uploadRequest = (options) => {
-            file.value = options.file
-            // const data = new FormData();
-            // data.append('file', options.file)
-            options.onSuccess()
-            // emit('uploadFunction', data)
+            // file.value = options.file
+            const data = new FormData();
+            data.append('file', options.file)
+            // options.onSuccess()
+            emit('uploadFunction', data)
+        }
+
+        // 预览图片
+        const handlePreview: UploadProps['onPreview'] = (uploadFile) => {
+            console.log(uploadFile)
+            dialogImageUrl.value = uploadFile.url!
+            dialogVisible.value = true
         }
         return {
-            imageUrl,
-            uploadSuccess,
+            dialogImageUrl,
+            dialogVisible,
             beforeUpload,
-            uploadRequest
+            uploadRequest,
+            handlePreview
         }
 
     },

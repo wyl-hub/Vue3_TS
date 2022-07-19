@@ -1,8 +1,10 @@
 <template>
     <div class="tableContainer">
         <div class="header">
-            <div>标题</div>
-            <slot name="header"></slot>
+            <slot name="title">
+                <div></div>
+            </slot>
+            <slot name="headerOpt"></slot>
         </div>
         <el-table :data="tableData" style="width: 100%" border>
             <template v-for="item in tableConfig" :key="item.prop">

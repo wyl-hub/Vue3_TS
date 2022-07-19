@@ -1,4 +1,4 @@
 import uploadRequest from "./upload";
 
 
-export const customerUpload = data => uploadRequest({ url: '/customer/upload', data })
+export const uploadSingle = data => uploadRequest({ url: '/page/upload', data })
