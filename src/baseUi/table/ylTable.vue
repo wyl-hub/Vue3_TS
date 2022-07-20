@@ -10,8 +10,12 @@
             <template v-for="item in tableConfig" :key="item.prop">
                 <el-table-column :prop="item.prop" :label="item.label">
                     <template #default="scope">
-                        <slot :name="item.prop" :item="scope.row">
+                        <slot :name="item.prop" :item="scope.row" :index="scope.$index">
                             {{ scope.row[item.prop] }}
+                        </slot>
+                        <slot v-if="item.prop === 'options'" :name="item.prop" :item="scope.row" :index="scope.$index">
+                            <el-button @click="handleEdit(scope.row)" type="primary" plain>编辑</el-button>
+                            <el-button type="danger" plain>删除</el-button>
                         </slot>
                     </template>
                 </el-table-column>
@@ -38,10 +42,15 @@ export default defineComponent({
             required: true
         }
     },
-    setup() {
+    emits: ['handleEdit'],
+    setup(props, { emit }) {
+        const handleEdit = row => {
+            emit('handleEdit', row)
+        }
 
-
-        return {}
+        return {
+            handleEdit
+        }
     }
 })
 </script>

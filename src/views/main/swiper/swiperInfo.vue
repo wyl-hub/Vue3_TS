@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, reactive, watch, PropType } from 'vue'
+import { defineComponent, ref, reactive, watch, PropType, effect } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { useSaveForm } from './hooks'
 import type { IFile } from '@/baseUi/upload/types'
@@ -29,6 +29,11 @@ import YLUpload from '@/baseUi/upload'
 
 export default defineComponent({
     props: {
+        infoId: {
+            type: [Number, String],
+            default: '',
+            required: true
+        },
         showAdd: {
             type: Boolean,
             required: true
@@ -47,6 +52,11 @@ export default defineComponent({
             url: ''
         })
        
+       effect(() => {
+            const id = props.infoId
+            if (!id) return
+            console.log(id)
+       })
 
         // 图片列表
         const fileList = ref<IFile[]>([])

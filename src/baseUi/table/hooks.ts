@@ -30,3 +30,8 @@ export const handleClose = (showFlag) => {
             showFlag.value = false
         })
 }
+
+// 编辑
+export const useEdit = row => {
+    console.log(row)
+}
