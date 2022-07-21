@@ -31,6 +31,13 @@ export const handleClose = (showFlag) => {
         })
 }
 
+// 关闭侧滑 清空数据
+export const initForm = form => {
+    Object.keys(form).forEach(item => {
+        form[item] = ''
+    })
+}
+
 // 编辑
 export const useEdit = row => {
     console.log(row)

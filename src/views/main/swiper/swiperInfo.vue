@@ -1,6 +1,7 @@
 <template>
     <div class="infoPage">
-        <el-form :model="form" :rules="rules" ref="formDom" label-position="right" label-width="70px" class="login-form">
+        <el-form :model="form" :rules="rules" ref="formDom" label-position="right" label-width="70px"
+            class="login-form">
             <el-form-item required prop="name" label="标题">
                 <el-input v-model="form.name" />
             </el-form-item>
@@ -20,9 +21,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, reactive, watch, PropType, effect } from 'vue'
+import { defineComponent, ref, reactive, watch, PropType, effect, toRefs } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
-import { useSaveForm } from './hooks'
+import { useSaveForm, useSwiperInfo } from './hooks'
 import type { IFile } from '@/baseUi/upload/types'
 import { uploadSingle } from '@/service/upload/index'
 import YLUpload from '@/baseUi/upload'
@@ -39,24 +40,20 @@ export default defineComponent({
             required: true
         },
         seqList: {
-            type: Array as PropType<number[]>,
+            type: Array as PropType<number[] | string[]>,
             required: true
         }
     },
     emits: ['update:showAdd'],
     setup(props, { emit }) {
+        const state = reactive(props)
+        const { seqList } = toRefs(state)
         const formDom = ref<FormInstance>()
         const form = reactive({
             name: '',
             seq: '',
             url: ''
         })
-       
-       effect(() => {
-            const id = props.infoId
-            if (!id) return
-            console.log(id)
-       })
 
         // 图片列表
         const fileList = ref<IFile[]>([])
@@ -67,6 +64,14 @@ export default defineComponent({
                 form.url = ''
             }
         }, { deep: true })
+
+        // 如果是详情进来 请求详情数据
+        effect(() => {
+            const id = props.infoId
+            if (!id) return
+            useSwiperInfo(id, form, fileList, seqList)
+        })
+
         const rules = reactive<FormRules>({
             name: [
                 { required: true, message: '标题不能为空', trigger: 'blur' },
@@ -100,6 +105,7 @@ export default defineComponent({
             rules,
             formDom,
             fileList,
+            seqList,
             uploadFunction,
             submit
         }
@@ -114,6 +120,7 @@ export default defineComponent({
 .infoPage {
     overflow-x: hidden;
 }
+
 .footer {
     margin-top: 50px;
     text-align: right;

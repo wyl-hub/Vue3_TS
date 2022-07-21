@@ -15,7 +15,7 @@
                         </slot>
                         <slot v-if="item.prop === 'options'" :name="item.prop" :item="scope.row" :index="scope.$index">
                             <el-button @click="handleEdit(scope.row)" type="primary" plain>编辑</el-button>
-                            <el-button type="danger" plain>删除</el-button>
+                            <el-button @click="handleDelete(scope.row)" type="danger" plain>删除</el-button>
                         </slot>
                     </template>
                 </el-table-column>
@@ -42,14 +42,19 @@ export default defineComponent({
             required: true
         }
     },
-    emits: ['handleEdit'],
+    emits: ['handleEdit', 'handleDelete'],
     setup(props, { emit }) {
         const handleEdit = row => {
             emit('handleEdit', row)
         }
 
+        const handleDelete = row => {
+            emit('handleDelete', row.id)
+        }
+
         return {
-            handleEdit
+            handleEdit,
+            handleDelete
         }
     }
 })
