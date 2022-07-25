@@ -3,6 +3,8 @@ export interface ISystemState {
     userList: any[]
     swiperList: any[]
     swiperTotal: number
+    sortList: any[]
+    sortTotal: number
 }
 
 export interface IPageTableForm {

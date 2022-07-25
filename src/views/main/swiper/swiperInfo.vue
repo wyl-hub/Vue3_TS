@@ -96,7 +96,11 @@ export default defineComponent({
             if (!formDom.value) return
             formDom.value?.validate((valid) => {
                 if (!valid) return
-                useSaveForm(form, emit)
+                const data = {
+                    id: props.infoId,
+                    ...form
+                }
+                useSaveForm(data, emit)
             })
         }
 

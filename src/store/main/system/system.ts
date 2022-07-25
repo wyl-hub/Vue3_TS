@@ -2,6 +2,7 @@ import { Module } from "vuex"
 import { getPageList } from '@/service/main/system/system'
 import type { IRootState } from "@/store/types"
 import type { ISystemState, IPageTableForm } from "./types"
+import type { IPageList } from '@/service/main/system/types'
 
 
 const systemModule: Module<ISystemState, IRootState> = {
@@ -11,14 +12,16 @@ const systemModule: Module<ISystemState, IRootState> = {
             userList: [],
             userTotal: 0,
             swiperList: [],
-            swiperTotal: 0
+            swiperTotal: 0,
+            sortList: [],
+            sortTotal: 0
         }
     },
     mutations: {
-        setPageList(state, payload: { pageName: string, result: any[] }) {
+        setPageList(state, payload: { pageName: string, result: IPageList }) {
             const { result, pageName } = payload
-            state[`${pageName}List`] = result
-            state[`${pageName}Total`] = result.length
+            state[`${pageName}List`] = result.list
+            state[`${pageName}Total`] = result.total
         }
     },
     actions: {

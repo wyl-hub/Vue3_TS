@@ -11,17 +11,18 @@ export function mapRouter(menuList: IMenuItem[]): RouteRecordRaw[] {
     const path = route.default.path
     if (recursionRoute(menuList, path)) allRoutes.push(route.default)
   })
-  return allRoutes 
+  return allRoutes
 }
 
 function recursionRoute(arr: IMenuItem[], path: string): boolean {
   let result = false
-  arr.forEach(item => {
+  arr.some(item => {
     if (item.children && item.children.length > 0) {
       result = recursionRoute(item.children, path)
     } else {
       if (item.url === path) result = true
     }
+    return result
   })
   return result
 }

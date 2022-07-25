@@ -29,15 +29,15 @@ export const useSwiperInfo = (id, form, fileList, seqList) => {
             uid: res.id
         }
         if (typeof res.seq === 'number') {
-            if (seqList.value.length > 1) {
+            if (res.seq === 5 || seqList.value.length <= 1) {
+                seqList.value.push(res.seq)
+            } else if (seqList.value.length > 1) {
                 for (let i = 1; i < seqList.value.length; ++i) {
                     if (seqList.value[i] > res.seq) {
                         seqList.value.splice(i, 0, res.seq)
                         break
                     }
                 }
-            } else {
-                seqList.value.push(res.seq)
             }
         }
     })

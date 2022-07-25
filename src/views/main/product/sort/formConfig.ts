@@ -5,14 +5,8 @@ export const tableConfig = [
         minWidth: ''
     },
     {
-        prop: 'url',
-        label: '图片',
-        minWidth: ''
-    },
-    {
-        prop: 'seq',
-        label: '序列',
-        sortable: true,
+        prop: 'ifShow',
+        label: '是否展示',
         minWidth: ''
     },
     {
